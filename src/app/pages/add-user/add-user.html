@@ -1,1 +1,23 @@
-<p>add-user works!</p>
+<!-- 20250623 mod by jimmy for 新增使用者功能 -->
+<h2>新增使用者</h2>
+
+<form (ngSubmit)="addUser()" #userForm="ngForm">
+  <label>
+    姓名：
+    <!-- type="text" : 表示文字輸入。[(ngModel)]="name" : 表示雙向綁定。name="name" : 將名稱定義為"name" -->
+    <input type="text" [(ngModel)]="name" name="name" required /> <!-- required : 表示此欄位是必填欄位 -->
+  </label>
+  <br />
+  <label>
+    Email：
+    <!-- type="email" : 表示信箱輸入。 -->
+    <input type="email" [(ngModel)]="email" name="email" required /> <!-- required : 表示此欄位是必填欄位 -->
+  </label>
+  <br /><br />
+  <button type="submit" [disabled]="!userForm.form.valid">新增</button>
+</form>
+
+<!-- [(ngModel)] 雙向綁定中 : 
+ HTML → TS：輸入值會更新到 TS 中定義的變數 例如name、email
+ TS → HTML：變數更新時也會同步更新到畫面中 ，也就是回過頭將網頁的數值做更新
+-->
