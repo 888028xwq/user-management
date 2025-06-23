@@ -1,0 +1,23 @@
+<h2>使用者清單[✔ 我在 Users 頁面]</h2>
+
+<table border="1" cellpadding="8" cellspacing="0">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>姓名</th>
+      <th>Email</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users">
+      <td>{{ user.id }}</td>
+      <td>{{ user.name }}</td>
+      <td>{{ user.email }}</td>
+      <td>
+        <button>編輯</button>
+        <button (click)="deleteUser(user.id)">刪除</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
