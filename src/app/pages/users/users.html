@@ -1,5 +1,9 @@
 <h2>使用者清單[✔ 我在 Users 頁面]</h2>
 
+<!-- 20250624 mod by jimmy for 功能擴充 : 使用者搜尋 -->
+<input type="text" [(ngModel)]="searchTerm" placeholder="搜尋姓名或Email" />
+<br /><br />
+
 <table border="1" cellpadding="8" cellspacing="0">
   <thead>
     <tr>
@@ -10,7 +14,8 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let user of users">
+    <!-- 20250624 mod by jimmy for 功能擴充 : 使用者搜尋 -->
+    <tr *ngFor="let user of filteredUsers">
       <td>{{ user.id }}</td>
       <td>{{ user.name }}</td>
       <td>{{ user.email }}</td>

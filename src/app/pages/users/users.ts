@@ -5,12 +5,15 @@ import { CommonModule } from '@angular/common';
 // 20250624 mod by jimmy for 編輯使用者功能
 import { RouterModule } from '@angular/router'; 
 
+// 20250624 mod by jimmy for 功能擴充 : 使用者搜尋
+import { FormsModule } from '@angular/forms'; //管理使用者輸入資料
+
 @Component({
   selector: 'app-users',
   standalone: true,
   
   // 20250624 mod by jimmy for 編輯使用者功能
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './users.html',
   styleUrls: ['./users.css']
 })
@@ -55,6 +58,14 @@ export class UsersComponent implements OnInit { // 補充"implements OnInit"，�
       localStorage.setItem('users', JSON.stringify(this.users)); // 透過filter方法更新後的使用者資料重新存回 localStorage
       console.log(`${user.name} 已被刪除`);
     }
+  }
+
+  // 20250624 mod by jimmy for 功能擴充 : 使用者搜尋
+  searchTerm = ''; // 新增搜尋字串，雙向綁定
+  get filteredUsers() {
+    return this.users.filter(user =>
+      user.name.includes(this.searchTerm) || user.email.includes(this.searchTerm)
+    );
   }
 }
 
