@@ -15,7 +15,7 @@
       <td>{{ user.name }}</td>
       <td>{{ user.email }}</td>
       <td>
-        <button>編輯</button>
+        <button [routerLink]="['/edit-user', user.id]">編輯</button>
         <button (click)="deleteUser(user.id)">刪除</button>
       </td>
     </tr>

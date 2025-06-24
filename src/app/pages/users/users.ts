@@ -2,16 +2,21 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+// 20250624 mod by jimmy for 編輯使用者功能
+import { RouterModule } from '@angular/router'; 
+
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule],
+  
+  // 20250624 mod by jimmy for 編輯使用者功能
+  imports: [CommonModule, RouterModule],
   templateUrl: './users.html',
   styleUrls: ['./users.css']
 })
 
 // 20250623 mod by jimmy for 新增使用者功能
-export class UsersComponent implements OnInit {
+export class UsersComponent implements OnInit { // 補充"implements OnInit"，可以避免失去編譯器的提醒，讓ts知道我們要用ngOnInit()
   // 20250623 mod by jimmy for 新增使用者功能
   // users = [
   //     { id: 1, name: '王小明', email: 'xiaoming@example.com' },
@@ -21,7 +26,9 @@ export class UsersComponent implements OnInit {
 
   // 20250623 mod by jimmy for 新增使用者功能
   users: { id: number, name: string, email: string }[] = [];
-  ngOnInit() {
+
+  // 20250624 mod by jimmy for code一致性，補充void
+  ngOnInit(): void {
     const stored = localStorage.getItem('users'); // 從localStorage取出東西
 
     // 先看localStorage有沒有東西

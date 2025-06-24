@@ -1,0 +1,16 @@
+<!-- 20250624 mod by jimmy for 編輯使用者功能 -->
+<h2>編輯使用者</h2>
+
+<form (ngSubmit)="saveUser()" #editForm="ngForm">
+  <label>
+    姓名：
+    <input type="text" [(ngModel)]="name" name="name" required />
+  </label>
+  <br />
+  <label>
+    Email：
+    <input type="email" [(ngModel)]="email" name="email" required />
+  </label>
+  <br /><br />
+  <button type="submit" [disabled]="!editForm.form.valid">儲存變更</button>
+</form>
