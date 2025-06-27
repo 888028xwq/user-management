@@ -21,6 +21,13 @@ export class AddUserComponent {
   constructor(private router: Router) {} // 這個 component 具備路由導向能力
 
   addUser() {
+    // 20250627 mod by jimmy for Email 格式驗證
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(this.email)) {
+      alert('請輸入正確的 Email 格式');
+      return;
+    }
+
     const newUser = {
       id: Date.now(), // 暫時用 timestamp 當作 ID
       name: this.name, // this.name表示使用者在前端輸入的資料
