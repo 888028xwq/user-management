@@ -10,8 +10,11 @@ import { FormsModule } from '@angular/forms'; //管理使用者輸入資料
 
 // 20250627 mod by jimmy for API啟動
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Observable } from 'rxjs'; // 引入 Observable
+
+// 20250629 mod by jimmy for API刪除使用者功能
+import { Observable, throwError  } from 'rxjs'; // 引入 Observable
 import { catchError } from 'rxjs/operators'; // 引入 catchError 操作符
+import { error } from 'node:console';
 
 // 20250627 mod by jimmy for API啟動
 // 定義 User 介面，保持前後端資料結構一致
@@ -46,7 +49,7 @@ export class UsersComponent implements OnInit { // 補充"implements OnInit"，�
 
   // 20250627 mod by jimmy for API啟動
   users: User[] = []; // 使用定義的 User 介面
-  searchTerm = '';
+  searchTerm = ''; //雙向綁定
 
   constructor(private http: HttpClient) { }
 
@@ -91,10 +94,13 @@ export class UsersComponent implements OnInit { // 補充"implements OnInit"，�
   }
 
   deleteUser(id: number) {
+    // 20250629 mod by jimmy for API刪除使用者功能
+    const apiUrl = `https://localhost:7278/api/Users/${id}`;
     const user = this.users.find(u => u.id === id);
 
-    if (user && confirm(`是否確定刪除 ${user.name} ? `)){
-      this.users = this.users.filter(u => u.id !== id); //透過將users陣列做filter方法，保留id不同的剔除id相同的，實現刪除
+    if (user && confirm(`是否確定刪除 ${user.name} (ID : ${user.id}) ? `)){
+      // 20250629 mod by jimmy for API刪除使用者功能
+      // this.users = this.users.filter(u => u.id !== id); //透過將users陣列做filter方法，保留id不同的剔除id相同的，實現刪除
 
       // 20250623 mod by jimmy for 新增使用者功能
       // localStorage.setItem('users', JSON.stringify(this.users)); // 透過filter方法更新後的使用者資料重新存回 localStorage
@@ -102,15 +108,28 @@ export class UsersComponent implements OnInit { // 補充"implements OnInit"，�
 
       // 20250627 mod by jimmy for API啟動
       // 暫時仍然只在前端模擬刪除，待後續實作後端 DELETE API 再修改
-      this.users = this.users.filter(u => u.id !== id);
-      console.log(`${user.name} 已被刪除 (前端模擬)`);
+      // this.users = this.users.filter(u => u.id !== id);
+      // console.log(`${user.name} 已被刪除 (前端模擬)`);
+      
+      this.http.delete(apiUrl).pipe(
+        catchError(error =>{
+          console.error('刪除使用者失敗:', error);
+          alert('刪除使用者失敗，請檢查網路或後端服務。');
+          return throwError(() => new Error('刪除使用者失敗')); // 拋出錯誤，阻止訂閱繼續執行
+        })
+      ).subscribe(() => { // 後端完成刪除後就來到前端更新使用者列表
+        console.log(`使用者 (ID: ${id}) 已成功刪除`);
+        // 如果後端刪除成功，才更新前端的使用者列表
+        this.users = this.users.filter(u => u.id !== id);
+      })
     }
   }
 
   // 20250624 mod by jimmy for 功能擴充 : 使用者搜尋
   // 20250627 mod by jimmy for API啟動
   // searchTerm = ''; // 新增搜尋字串，雙向綁定
-  get filteredUsers() {
+  // 20250629 mod by jimmy for 過濾使用者
+  get filteredUsers(): User[] {
     return this.users.filter(user =>
       user.name.includes(this.searchTerm) || user.email.includes(this.searchTerm)
     );

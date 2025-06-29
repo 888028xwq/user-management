@@ -75,8 +75,9 @@ export class EditUserComponent implements OnInit {
           })
         );
       })
-    ).subscribe(user => {
+    ).subscribe(user => { // user是從後端取得的使用者資料
       if (user){
+        // 把從後端獲取到的使用者資料附值到前端的編輯頁面的輸入框(name跟email有雙向綁定)
         this.name = user.name;
         this.email = user.email;
       }
